@@ -85,6 +85,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     [settings setValue: blocklist forKey: @"ActiveBlocklist"];
     [settings setValue: @(isAllowlist) forKey: @"ActiveBlockAsWhitelist"];
     [settings setValue: endDate forKey: @"BlockEndDate"];
+    [SCBlockUtilities startTrustedElapsedTrackingWithRequiredDuration: [endDate timeIntervalSinceDate: [NSDate date]]];
     
     // update all the settings for the block, which we're basically just copying from defaults to settings
     [settings setValue: blockSettings[@"ClearCaches"] forKey: @"ClearCaches"];
@@ -253,7 +254,12 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         [self.daemonMethodLock unlock];
     }
     
+    NSTimeInterval extensionSecs = [newEndDate timeIntervalSinceDate: currentEndDate];
+    NSTimeInterval requiredDurationSecs = [[settings valueForKey: @"BlockRequiredDurationSeconds"] doubleValue];
     [settings setValue: newEndDate forKey: @"BlockEndDate"];
+    if (requiredDurationSecs > 0 && extensionSecs > 0) {
+        [settings setValue: @(requiredDurationSecs + extensionSecs) forKey: @"BlockRequiredDurationSeconds"];
+    }
     
     // make sure everyone knows about our new end date
     NSError* syncErr = [settings syncSettingsAndWait: 5];

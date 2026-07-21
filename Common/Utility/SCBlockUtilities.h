@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)legacyBlockIsRunning;
 
 + (BOOL)currentBlockIsExpired;
++ (void)startTrustedElapsedTrackingWithRequiredDuration:(NSTimeInterval)requiredDurationSecs;
++ (NSTimeInterval)trustedElapsedSecondsForCurrentBlockAndUpdateSettings:(BOOL)updateSettings;
 
 + (BOOL)blockRulesFoundOnSystem;
 

@@ -80,6 +80,9 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
 - (NSDictionary*)defaultSettingsDict {
     return @{
         @"BlockEndDate": [NSDate distantPast],
+        @"BlockRequiredDurationSeconds": @0,
+        @"BlockTrustedElapsedSeconds": @0,
+        @"BlockLastContinuousTimeSeconds": @0,
         @"ActiveBlocklist": @[],
         @"ActiveBlockAsWhitelist": @NO,
 

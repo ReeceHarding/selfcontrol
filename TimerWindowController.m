@@ -148,7 +148,14 @@
                                       waitUntilDone:NO];
 
     NSString* finishingString = NSLocalizedString(@"Finishing", @"String shown when waiting for finished block to clear");
-	int numSeconds = (int) [blockEndingDate_ timeIntervalSinceNow];
+    NSTimeInterval remainingSeconds = [blockEndingDate_ timeIntervalSinceNow];
+    if ([SCBlockUtilities modernBlockIsRunning]) {
+        NSTimeInterval requiredDurationSecs = [[settings_ valueForKey: @"BlockRequiredDurationSeconds"] doubleValue];
+        if (requiredDurationSecs > 0) {
+            remainingSeconds = requiredDurationSecs - [SCBlockUtilities trustedElapsedSecondsForCurrentBlockAndUpdateSettings: NO];
+        }
+    }
+	int numSeconds = (int) remainingSeconds;
 	int numHours;
 	int numMinutes;
 
@@ -206,7 +213,7 @@
 	[timerLabel_ setFrame:NSRectFromCGRect(CGRectMake(0, timerLabel_.frame.origin.y, self.window.frame.size.width, timerLabel_.frame.size.height))];
 	[self resetStrikes];
     
-	if([[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"] && [blockEndingDate_ timeIntervalSinceNow] > 0) {
+	if([[NSUserDefaults standardUserDefaults] boolForKey: @"BadgeApplicationIcon"] && remainingSeconds > 0) {
 		// We want to round up the minutes--standard when we aren't displaying seconds.
 		if(numSeconds > 0 && numMinutes != 59) {
 			numMinutes++;
