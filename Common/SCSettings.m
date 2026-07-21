@@ -46,11 +46,13 @@ NSString* const SETTINGS_FILE_DIR = @"/usr/local/etc/";
         
         _settingsDict = nil;
         
-        [[NSDistributedNotificationCenter defaultCenter] addObserver: self
-                                                            selector: @selector(onSettingChanged:)
-                                                                name: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
-                                                              object: nil
-                                                  suspensionBehavior: NSNotificationSuspensionBehaviorDeliverImmediately];
+        if (_readOnly) {
+            [[NSDistributedNotificationCenter defaultCenter] addObserver: self
+                                                                selector: @selector(onSettingChanged:)
+                                                                    name: @"org.eyebeam.SelfControl.SCSettingsValueChanged"
+                                                                  object: nil
+                                                      suspensionBehavior: NSNotificationSuspensionBehaviorDeliverImmediately];
+        }
     }
     return self;
 }

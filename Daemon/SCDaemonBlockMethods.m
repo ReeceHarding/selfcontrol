@@ -179,14 +179,20 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
     }
     
     BlockManager* blockManager = [[BlockManager alloc] initAsAllowlist: [settings boolForKey: @"ActiveBlockAsWhitelist"]
-                                                            allowLocal: [settings boolForKey: @"EvaluateCommonSubdomains"]
-                                               includeCommonSubdomains: [settings boolForKey: @"AllowLocalNetworks"]
+                                                            allowLocal: [settings boolForKey: @"AllowLocalNetworks"]
+                                               includeCommonSubdomains: [settings boolForKey: @"EvaluateCommonSubdomains"]
                                                   includeLinkedDomains: [settings boolForKey: @"IncludeLinkedDomains"]];
     [blockManager enterAppendMode];
     [blockManager addBlockEntriesFromStrings: added];
     [blockManager finishAppending];
     
-    [settings setValue: newBlocklist forKey: @"ActiveBlocklist"];
+    NSMutableArray* retainedBlocklist = [NSMutableArray arrayWithArray: activeBlocklist];
+    for (NSString* addedEntry in added) {
+        if (![retainedBlocklist containsObject: addedEntry]) {
+            [retainedBlocklist addObject: addedEntry];
+        }
+    }
+    [settings setValue: retainedBlocklist forKey: @"ActiveBlocklist"];
     
     // make sure everyone knows about our new list
     NSError* syncErr = [settings syncSettingsAndWait: 5];
@@ -245,6 +251,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
+        return;
     }
     if ([newEndDate timeIntervalSinceDate: currentEndDate] > 86400) { // 86400 seconds = 1 day
         NSLog(@"ERROR: Can't extend block end date by more than 1 day at a time");
@@ -252,6 +259,7 @@ NSTimeInterval CHECKUP_LOCK_TIMEOUT = 0.5; // use a shorter lock timeout for che
         [SCSentry captureError: err];
         reply(err);
         [self.daemonMethodLock unlock];
+        return;
     }
     
     NSTimeInterval extensionSecs = [newEndDate timeIntervalSinceDate: currentEndDate];

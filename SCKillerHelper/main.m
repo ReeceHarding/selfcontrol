@@ -12,6 +12,7 @@
 #import "BlockManager.h"
 #import "SCSettings.h"
 #import "SCHelperToolUtilities.h"
+#import "SCBlockUtilities.h"
 #import "SCMiscUtilities.h"
 #import <ServiceManagement/ServiceManagement.h>
 #import "SCMigrationUtilities.h"
@@ -66,6 +67,17 @@ int main(int argc, char* argv[]) {
         // we need to setuid to root, otherwise launchctl won't find system launch daemons
         // depite the EUID being 0 as expected - not sure why that is
         setuid(0);
+
+        if ([SCBlockUtilities modernBlockIsRunning] && ![SCBlockUtilities currentBlockIsExpired]) {
+            [log appendString: @"Refusing to clear an active modern block before the trusted timer has elapsed.\n"];
+            [log writeToFile: logFilePath
+                  atomically: YES
+                    encoding: NSUTF8StringEncoding
+                       error: NULL];
+            NSLog(@"ERROR: Refusing to clear active block before trusted timer elapsed.");
+            [SCSentry captureError: [SCErr errorWithCode: 405]];
+            exit(EX_UNAVAILABLE);
+        }
 
 		/* FIRST TASK: print debug info */
 
