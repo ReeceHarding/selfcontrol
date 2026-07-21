@@ -21,17 +21,7 @@
 }
 
 - (NSString *)formatSeconds:(NSTimeInterval)seconds {
-    NSString* formatted;
-
-    BOOL useModernBehavior = (NSAppKitVersionNumber >= NSAppKitVersionNumber10_8);
-    if (useModernBehavior) {
-        formatted = [self formatSecondsUsingModernBehavior:seconds];
-    }
-    else {
-        formatted = [self formatSecondsUsingLegacyBehavior:seconds];
-    }
-
-    return formatted;
+    return [self formatSecondsUsingLegacyBehavior:seconds];
 }
 
 - (NSString *)formatSecondsUsingModernBehavior:(NSTimeInterval)seconds

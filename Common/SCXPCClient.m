@@ -101,10 +101,8 @@
                 if ([NSThread isMainThread]) {
                     self.daemonConnection = nil;
                 } else {
-                    // running this synchronously ensures that the daemonConnection is nil'd out even if
-                    // reinstantiate the connection immediately
-                    NSLog(@"About to dispatch_sync");
-                    dispatch_sync(dispatch_get_main_queue(), ^{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (connection != self.daemonConnection) return;
                         self.daemonConnection = nil;
                     });
                 }

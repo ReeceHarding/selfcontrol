@@ -429,6 +429,9 @@
     blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 60];
 
 	[self refreshUserInterface];
+    if (![SCUIUtilities blockIsRunning] && !initialWindow_.isVisible) {
+        [initialWindow_ makeKeyAndOrderFront: self];
+    }
     
     NSOperatingSystemVersion minRequiredVersion = (NSOperatingSystemVersion){10,10,0}; // Yosemite
     NSString* minRequiredVersionString = @"10.10 (Yosemite)";
@@ -479,6 +482,16 @@
 - (void)closeDomainList {
 	[domainListWindowController_ close];
 	domainListWindowController_ = nil;
+}
+
+- (BOOL)applicationShouldHandleReopen:(NSApplication*)sender hasVisibleWindows:(BOOL)flag {
+    if ([SCUIUtilities blockIsRunning]) {
+        [self showTimerWindow];
+    } else {
+        [initialWindow_ makeKeyAndOrderFront: self];
+    }
+
+    return YES;
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed: (NSApplication*) theApplication {
