@@ -8,8 +8,12 @@
 #import "SCDurationSlider.h"
 #import "SCTimeIntervalFormatter.h"
 #import <TransformerKit/NSValueTransformer+TransformerKit.h>
+#import <math.h>
 
 #define kValueTransformerName @"BlockDurationSliderTransformer"
+#define kMinDurationMinutes 1
+#define kSliderMinPosition 0.0
+#define kSliderMaxPosition 1.0
 
 @implementation SCDurationSlider
 
@@ -35,15 +39,62 @@
 - (void)initializeDurationProperties {
     // default: 30 day max
     _maxDuration = 30 * 24 * 60;
+    [self configurePositionRange];
 
     // register an NSValueTransformer
     [self registerMinutesValueTransformer];
 }
 
 - (void)setMaxDuration:(NSInteger)maxDuration {
-    _maxDuration = maxDuration;
-    [self setMinValue: 1]; // never start a block shorter than 1 minute
-    [self setMaxValue: self.maxDuration];
+    _maxDuration = MAX(maxDuration, kMinDurationMinutes);
+    [self configurePositionRange];
+}
+
+- (void)configurePositionRange {
+    [self setMinValue: kSliderMinPosition];
+    [self setMaxValue: kSliderMaxPosition];
+    [self setDurationValueMinutes: self.durationValueMinutes];
+}
+
+- (NSInteger)clampedDurationMinutes:(NSInteger)durationMinutes {
+    return MIN(MAX(durationMinutes, kMinDurationMinutes), self.maxDuration);
+}
+
+- (NSInteger)roundedDurationMinutes:(double)durationMinutes {
+    NSInteger roundedMinutes;
+    if (durationMinutes < 60) {
+        roundedMinutes = lround(durationMinutes);
+    } else if (durationMinutes < 6 * 60) {
+        roundedMinutes = lround(durationMinutes / 5.0) * 5;
+    } else if (durationMinutes < 24 * 60) {
+        roundedMinutes = lround(durationMinutes / 15.0) * 15;
+    } else if (durationMinutes < 7 * 24 * 60) {
+        roundedMinutes = lround(durationMinutes / 60.0) * 60;
+    } else {
+        roundedMinutes = lround(durationMinutes / (6.0 * 60.0)) * 6 * 60;
+    }
+
+    return [self clampedDurationMinutes: roundedMinutes];
+}
+
+- (double)sliderPositionForDurationMinutes:(NSInteger)durationMinutes {
+    NSInteger clampedDuration = [self clampedDurationMinutes: durationMinutes];
+    if (self.maxDuration <= kMinDurationMinutes) {
+        return kSliderMinPosition;
+    }
+
+    double logMax = log((double)self.maxDuration);
+    return log((double)clampedDuration) / logMax;
+}
+
+- (NSInteger)durationMinutesForSliderPosition:(double)sliderPosition {
+    if (self.maxDuration <= kMinDurationMinutes) {
+        return kMinDurationMinutes;
+    }
+
+    double clampedPosition = MIN(MAX(sliderPosition, kSliderMinPosition), kSliderMaxPosition);
+    double rawMinutes = exp(clampedPosition * log((double)self.maxDuration));
+    return [self roundedDurationMinutes: rawMinutes];
 }
 
 - (void)registerMinutesValueTransformer {
@@ -59,7 +110,11 @@
 }
 
 - (NSInteger)durationValueMinutes {
-    return lroundf(self.floatValue);
+    return [self durationMinutesForSliderPosition: self.doubleValue];
+}
+
+- (void)setDurationValueMinutes:(NSInteger)durationValueMinutes {
+    [self setDoubleValue: [self sliderPositionForDurationMinutes: durationValueMinutes]];
 }
 
 - (void)bindDurationToObject:(id)obj keyPath:(NSString*)keyPath {

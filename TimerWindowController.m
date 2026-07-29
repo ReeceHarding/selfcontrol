@@ -276,7 +276,7 @@
     // chop it down to our max display value so the user doesn't
     // accidentally extend the block much longer than intended
     if (extendDurationSlider_.durationValueMinutes > extendDurationSlider_.maxDuration) {
-        extendDurationSlider_.integerValue = extendDurationSlider_.maxDuration;
+        [extendDurationSlider_ setDurationValueMinutes: extendDurationSlider_.maxDuration];
     }
 
     extendDurationLabel_.stringValue = extendDurationSlider_.durationDescription;

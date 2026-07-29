@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) NSString* durationDescription;
 
 - (NSInteger)durationValueMinutes;
+- (void)setDurationValueMinutes:(NSInteger)durationValueMinutes;
 - (void)bindDurationToObject:(id)obj keyPath:(NSString*)keyPath;
 - (NSString*)durationDescription;
 

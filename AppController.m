@@ -82,7 +82,7 @@
     }
 
     if (!senderIsDurationSlider) {
-        [blockDurationSlider_ setIntegerValue: numMinutes];
+        [blockDurationSlider_ setDurationValueMinutes: numMinutes];
     }
     [self setDefaultsBlockDurationOnMainThread: @(numMinutes)];
 

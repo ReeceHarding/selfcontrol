@@ -247,7 +247,7 @@ DQ
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="xty-Ul-pJS"/>
                         </constraints>
-                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="43200" tickMarkPosition="below" sliderType="linear" id="vo6-ED-pch">
+                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1" tickMarkPosition="below" sliderType="linear" id="vo6-ED-pch">
                             <font key="font" usesAppearanceFont="YES"/>
                         </sliderCell>
                         <connections>
