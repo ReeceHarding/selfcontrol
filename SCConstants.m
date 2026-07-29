@@ -48,7 +48,7 @@ OSStatus const AUTH_CANCELLED_STATUS = -60006;
             @"TimerWindowFloats": @NO,
             @"BadgeApplicationIcon": @YES,
             @"BlockDuration": @1,
-            @"MaxBlockLength": @1440,
+            @"MaxBlockLength": @(30 * 24 * 60),
             @"WhitelistAlertSuppress": @NO,
             @"GetStartedShown": @NO,
             @"EvaluateCommonSubdomains": @YES,

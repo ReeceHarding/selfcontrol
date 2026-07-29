@@ -33,8 +33,8 @@
 }
 
 - (void)initializeDurationProperties {
-    // default: 1 day max
-    _maxDuration = 1440;
+    // default: 30 day max
+    _maxDuration = 30 * 24 * 60;
 
     // register an NSValueTransformer
     [self registerMinutesValueTransformer];

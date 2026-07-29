@@ -3595,7 +3595,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# buildNumber=$(xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep \"CURRENT_PROJECT_VERSION\" | sed 's/[ ]*CURRENT_PROJECT_VERSION = //')\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${MARKETING_VERSION}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
+			shellScript = "# buildNumber=$(xcodebuild -project SelfControl.xcodeproj/ -showBuildSettings | grep \"CURRENT_PROJECT_VERSION\" | sed 's/[ ]*CURRENT_PROJECT_VERSION = //')\nVERSION_HEADER_CONTENT=\"#define SELFCONTROL_VERSION_STRING @\\\"${MARKETING_VERSION}\\\"\"\nVERSION_HEADER_PATH=\"${PROJECT_DIR}/version-header.h\"\nif [ ! -f \"${VERSION_HEADER_PATH}\" ] || [ \"$(cat \"${VERSION_HEADER_PATH}\")\" != \"${VERSION_HEADER_CONTENT}\" ]; then\n    printf '%s\\n' \"${VERSION_HEADER_CONTENT}\" > \"${VERSION_HEADER_PATH}\"\nfi\n";
 		};
 		CB5E5FF81C3A5FD10038F331 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3625,7 +3625,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define SELFCONTROL_VERSION_STRING @\\\"${MARKETING_VERSION}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
+			shellScript = "VERSION_HEADER_CONTENT=\"#define SELFCONTROL_VERSION_STRING @\\\"${MARKETING_VERSION}\\\"\"\nVERSION_HEADER_PATH=\"${PROJECT_DIR}/version-header.h\"\nif [ ! -f \"${VERSION_HEADER_PATH}\" ] || [ \"$(cat \"${VERSION_HEADER_PATH}\")\" != \"${VERSION_HEADER_CONTENT}\" ]; then\n    printf '%s\\n' \"${VERSION_HEADER_CONTENT}\" > \"${VERSION_HEADER_PATH}\"\nfi\n";
 		};
 		CB81A92E25B7B4B8006956F7 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3642,7 +3642,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"#define SELFCONTROL_VERSION_STRING @\\\"${MARKETING_VERSION}\\\"\" > \"${PROJECT_DIR}/version-header.h\"\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nVERSION_HEADER_CONTENT=\"#define SELFCONTROL_VERSION_STRING @\\\"${MARKETING_VERSION}\\\"\"\nVERSION_HEADER_PATH=\"${PROJECT_DIR}/version-header.h\"\nif [ ! -f \"${VERSION_HEADER_PATH}\" ] || [ \"$(cat \"${VERSION_HEADER_PATH}\")\" != \"${VERSION_HEADER_CONTENT}\" ]; then\n    printf '%s\\n' \"${VERSION_HEADER_CONTENT}\" > \"${VERSION_HEADER_PATH}\"\nfi\n";
 		};
 		D76E3B7390CC3DD10C32CD7F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

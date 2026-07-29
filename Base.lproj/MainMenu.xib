@@ -250,7 +250,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="aHf-Ya-8uh"/>
                         </constraints>
-                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="1440" doubleValue="1" tickMarkPosition="below" sliderType="linear" id="466">
+                        <sliderCell key="cell" continuous="YES" alignment="left" maxValue="43200" doubleValue="1" tickMarkPosition="below" sliderType="linear" id="466">
                             <font key="font" usesAppearanceFont="YES"/>
                         </sliderCell>
                         <connections>

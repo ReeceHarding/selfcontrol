@@ -30,7 +30,7 @@
 "306" = "SelfControl could't extend the block duration bcecause the current block was started with an older version of SelfControl.";
 "307" = "SelfControl couldn't extend the block duration because no block is currently running.";
 "308" = "SelfControl won't update the block to end at an earlier date - it can only be extended.";
-"309" = "SelfControl won't extend the block by more than 24 hours at a time.";
+"309" = "SelfControl won't extend the block by more than 30 days at a time.";
 "310" = "There was an error switching alert sounds because that sound name is unknown.";
 "310" = "There was an error switching alert sounds because the system couldn't find that sound.";
 

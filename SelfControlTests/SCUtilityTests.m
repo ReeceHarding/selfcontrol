@@ -10,6 +10,7 @@
 #import "SCSentry.h"
 #import "SCErr.h"
 #import "SCSettings.h"
+#import "SCConstants.h"
 
 @interface SCUtilityTests : XCTestCase
 
@@ -30,6 +31,11 @@ NSDictionary* veryLongBlockLegacyDict; // year-long block, one day in
 
 - (NSUserDefaults*)testDefaults {
     return [[NSUserDefaults alloc] initWithSuiteName: @"BlockDateUtilitiesTests"];
+}
+
+- (void)testDefaultMaximumBlockLengthIsThirtyDays {
+    NSInteger expectedMaxBlockLength = 30 * 24 * 60;
+    XCTAssertEqual([SCConstants.defaultUserDefaults[@"MaxBlockLength"] integerValue], expectedMaxBlockLength);
 }
 
 + (void)setUp {
