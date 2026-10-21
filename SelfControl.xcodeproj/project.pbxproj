@@ -3529,7 +3529,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer-frameworks.sh\"\n";
+			shellScript = "SCRIPT=\"${PODS_ROOT}/Target Support Files/Pods-SelfControl Killer/Pods-SelfControl Killer-frameworks.sh\"\nif [ -x \"$SCRIPT\" ]; then\n  \"$SCRIPT\"\nelse\n  echo \"Skipping missing CocoaPods embed frameworks script: $SCRIPT\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		BED0609C15A860C955A3552D /* [CP] Embed Pods Frameworks */ = {
@@ -3555,7 +3555,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SelfControl/Pods-SelfControl-frameworks.sh\"\n";
+			shellScript = "SCRIPT=\"${PODS_ROOT}/Target Support Files/Pods-SelfControl/Pods-SelfControl-frameworks.sh\"\nif [ -x \"$SCRIPT\" ]; then\n  \"$SCRIPT\"\nelse\n  echo \"Skipping missing CocoaPods embed frameworks script: $SCRIPT\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C4455A3F0260679D1BD5962E /* [CP] Check Pods Manifest.lock */ = {
@@ -3689,7 +3689,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests-frameworks.sh\"\n";
+			shellScript = "SCRIPT=\"${PODS_ROOT}/Target Support Files/Pods-SelfControl-SelfControlTests/Pods-SelfControl-SelfControlTests-frameworks.sh\"\nif [ -x \"$SCRIPT\" ]; then\n  \"$SCRIPT\"\nelse\n  echo \"Skipping missing CocoaPods embed frameworks script: $SCRIPT\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

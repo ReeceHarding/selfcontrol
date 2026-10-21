@@ -52,7 +52,7 @@
 	<string>Free and open-source under the GPL.</string>
 	<key>SMAuthorizedClients</key>
 	<array>
-		<string>anchor apple generic and (identifier &quot;org.eyebeam.SelfControl&quot; or identifier &quot;org.eyebeam.selfcontrol-cli&quot;) and certificate leaf[subject.OU] = 5DQ9397LBR</string>
+		<string>identifier &quot;org.eyebeam.SelfControl&quot; or identifier &quot;org.eyebeam.selfcontrol-cli&quot;</string>
 	</array>
 </dict>
 </plist>
