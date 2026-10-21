@@ -64,8 +64,9 @@
 
 - (IBAction)updateTimeSliderDisplay:(id)sender {
     NSInteger numMinutes;
+    BOOL senderIsDurationSlider = [sender isKindOfClass: [SCDurationSlider class]];
 
-    if ([sender isKindOfClass: [SCDurationSlider class]]) {
+    if (senderIsDurationSlider) {
         SCDurationSlider* senderSlider = (SCDurationSlider*)sender;
         numMinutes = senderSlider.durationValueMinutes;
     } else {
@@ -80,7 +81,9 @@
         numMinutes = floor(blockDurationSlider_.maxDuration);
     }
 
-    [blockDurationSlider_ setIntegerValue: numMinutes];
+    if (!senderIsDurationSlider) {
+        [blockDurationSlider_ setIntegerValue: numMinutes];
+    }
     [self setDefaultsBlockDurationOnMainThread: @(numMinutes)];
 
     blockSliderTimeDisplayLabel_.stringValue = [SCDurationSlider timeSliderDisplayStringFromNumberOfMinutes: numMinutes];
@@ -422,8 +425,6 @@
 
 	// Change block duration slider for hidden user defaults settings
     blockDurationSlider_.maxDuration = [defaults_ integerForKey: @"MaxBlockLength"];
-    [blockDurationSlider_ bindDurationToObject: [NSUserDefaultsController sharedUserDefaultsController]
-                                       keyPath: @"values.BlockDuration"];
     
     blocklistTeaserLabel_.stringValue = [SCUIUtilities blockTeaserStringWithMaxLength: 60];
 
