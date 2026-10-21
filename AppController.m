@@ -63,17 +63,27 @@
 }
 
 - (IBAction)updateTimeSliderDisplay:(id)sender {
-    NSInteger numMinutes = [defaults_ integerForKey: @"BlockDuration"];
+    NSInteger numMinutes;
 
-    // if the duration is larger than we can display on our slider
-    // chop it down to our max display value so the user doesn't
-    // accidentally start a much longer block than intended
-    if (numMinutes > blockDurationSlider_.maxDuration) {
-        [self setDefaultsBlockDurationOnMainThread: @(floor(blockDurationSlider_.maxDuration))];
+    if ([sender isKindOfClass: [SCDurationSlider class]]) {
+        SCDurationSlider* senderSlider = (SCDurationSlider*)sender;
+        numMinutes = senderSlider.durationValueMinutes;
+    } else {
         numMinutes = [defaults_ integerForKey: @"BlockDuration"];
     }
 
-    blockSliderTimeDisplayLabel_.stringValue = blockDurationSlider_.durationDescription;
+    numMinutes = MAX(numMinutes, 1);
+
+    // If the duration is larger than we can display on our slider, chop it down
+    // so the user doesn't accidentally start a longer block than intended.
+    if (numMinutes > blockDurationSlider_.maxDuration) {
+        numMinutes = floor(blockDurationSlider_.maxDuration);
+    }
+
+    [blockDurationSlider_ setIntegerValue: numMinutes];
+    [self setDefaultsBlockDurationOnMainThread: @(numMinutes)];
+
+    blockSliderTimeDisplayLabel_.stringValue = [SCDurationSlider timeSliderDisplayStringFromNumberOfMinutes: numMinutes];
 
 	[submitButton_ setEnabled: (numMinutes > 0) && ([[defaults_ arrayForKey: @"Blocklist"] count] > 0)];
 }
@@ -218,7 +228,7 @@
 			[self closeTimerWindow];
 		}
 
-		[self updateTimeSliderDisplay: blockDurationSlider_];
+		[self updateTimeSliderDisplay: nil];
 
 		if([defaults_ integerForKey: @"BlockDuration"] != 0 &&
            ([[defaults_ arrayForKey: @"Blocklist"] count] != 0 || [defaults_ boolForKey: @"BlockAsWhitelist"]) &&
